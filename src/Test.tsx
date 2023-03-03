@@ -1,98 +1,7 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  TouchableOpacity,
-  Button,
-} from 'react-native';
-import { Picker } from '@react-native-picker/picker';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { View, Text } from 'react-native';
+import React from 'react';
 
-import { firebase } from './config';
-import moment from 'moment';
-import { useEffect, useState } from 'react';
-
-interface DateData {
-  date: string;
-  startTime: number;
-  endTime: number;
-  id: string;
-}
-
-export default function App() {
-  const [dates, setDates] = useState<DateData[]>([]);
-  const [dateNumber, setDateNumber] = useState<number>();
-  const [totalHours, setTotalHours] = useState<number>();
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const timeTrackerRef = firebase.firestore().collection('time-tracker');
-
-  const createDate = () => {
-    const newDate = {
-      date: moment(new Date()).format('DD MMMM YYYY'),
-      startTime: 0,
-      endTime: 0,
-    } as DateData;
-
-    timeTrackerRef.add(newDate);
-  };
-
-  const previousDate = async (date: string, id: string) => {
-    const previousDate = moment(date, 'DD MMMM YYYY')
-      .subtract(1, 'day')
-      .format('DD MMMM YYYY');
-    await timeTrackerRef.doc(id).update({ date: previousDate });
-  };
-
-  const nextDate = async (date: string, id: string) => {
-    const previousDate = moment(date, 'DD MMMM YYYY')
-      .add(1, 'day')
-      .format('DD MMMM YYYY');
-    await timeTrackerRef.doc(id).update({ date: previousDate });
-  };
-
-  const handleStartTime = async (itemValue: number, id: string) => {
-    await timeTrackerRef.doc(id).update({ startTime: itemValue });
-  };
-
-  const handleEndTime = async (itemValue: number, id: string) => {
-    await timeTrackerRef.doc(id).update({ endTime: itemValue });
-  };
-
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-
-  const handleDateChange = async (date?: any, id?: string) => {
-    const updatedDate = moment(date).format('DD MMMM YYYY');
-    await timeTrackerRef.doc(id).update({ date: updatedDate });
-    hideDatePicker();
-  };
-
-  useEffect(() => {
-    timeTrackerRef.onSnapshot((querySnapshot) => {
-      let datesArr: DateData[] = [];
-      querySnapshot.forEach((doc) => {
-        datesArr.push({ ...doc.data(), id: doc.id } as DateData);
-      });
-      setDates(datesArr);
-    });
-  }, []);
-
-  useEffect(() => {
-    let sum = 0;
-    for (let i = 0; i < dates.length; i++) {
-      const diff = dates[i].endTime - dates[i].startTime;
-      sum += diff;
-    }
-    setTotalHours(sum);
-    setDateNumber(dates.length);
-  }, [dates]);
-
+const Test = () => {
   return (
     <View style={styles.container}>
       <View style={styles.countContainer}>
@@ -207,21 +116,6 @@ export default function App() {
       </View>
     </View>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 10,
-  },
-  button: {
-    alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    padding: 10,
-  },
-  countContainer: {
-    alignItems: 'center',
-    padding: 10,
-  },
-});
+export default Test;
