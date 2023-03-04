@@ -1,13 +1,3 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  TouchableOpacity,
-  Button,
-} from 'react-native';
-import { Picker } from '@react-native-picker/picker';
-
 import { useFonts } from 'expo-font';
 import TimeTracker from './src/components/TimeTracker';
 

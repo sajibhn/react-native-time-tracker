@@ -18,6 +18,7 @@ import {
 } from '../functions/function';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { styles } from '../styles/styles';
+import { LeftChev, RightChev } from './icons';
 
 interface DateData {
   date: string;
@@ -100,8 +101,9 @@ const TimeTracker = () => {
                   </View>
                   <View style={styles.singleDayControll}>
                     <TouchableOpacity onPress={() => previousDate(date, id)}>
-                      <Text>{`<`}</Text>
+                      <LeftChev width={12} height={12} />
                     </TouchableOpacity>
+
                     <View>
                       <TouchableOpacity onPress={() => showDatePicker(id)}>
                         <Text style={styles.singleDayControllDate}>{date}</Text>
@@ -116,7 +118,7 @@ const TimeTracker = () => {
                       )}
                     </View>
                     <TouchableOpacity onPress={() => nextDate(date, id)}>
-                      <Text>{`>`}</Text>
+                      <RightChev width={12} height={12} />
                     </TouchableOpacity>
                   </View>
                   <View style={styles.times}>
